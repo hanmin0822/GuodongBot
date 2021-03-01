@@ -1,5 +1,5 @@
 from modules.receive import rev_msg
-from modules.send_message import send_message
+from modules.handle_message import group_handle
 
 print('监听服务器已开启....')
 
@@ -15,7 +15,7 @@ while True:
         if rev["message_type"] == "private":  # 私聊
             continue
         elif rev["message_type"] == "group":  # 群聊
-            send_message("[CQ:tts,text=" + rev["message"] + "]",rev["group_id"],"group")
+            group_handle(rev)
         else:
             continue
     elif rev["post_type"] == "notice":
