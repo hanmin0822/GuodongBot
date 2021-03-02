@@ -11,16 +11,16 @@ class make_cq:
     # 拼接录音CQ码
     def make_record_cq(file, magic=0, timeout=-1, cache=1, proxy=1):
         if timeout == -1:
-            return "[CQ:record,file=" + file + ",magic=" + magic + "]"
+            return "[CQ:record,file=" + file + ",magic=" + str(magic) + "]"
         else:
-            return "[CQ:record,file=" + file + ",magic=" + magic + ",cache=" + cache + ",proxy=" + proxy + ",timeout=" + timeout + "]"
+            return "[CQ:record,file=" + file + ",magic=" + str(magic) + ",cache=" + str(cache) + ",proxy=" + str(proxy) + ",timeout=" + str(timeout) + "]"
 
     # 拼接图片CQ码
     def make_image_cq(file, type='normal', cache=1, id=40000):
         if type == 'normal':
-            return "[CQ:image,file=" + file + ",id=" + id + "]"
+            return "[CQ:image,file=" + file + ",id=" + str(id) + "]"
         else:
-            return "[CQ:image,file=" + file + ",type=" + type + ",id=" + id + ",cache=" + cache + "]"
+            return "[CQ:image,file=" + file + ",type=" + type + ",id=" + str(id) + ",cache=" + str(cache) + "]"
 
     # 拼接表情CQ码
     def make_face_cq(id):
