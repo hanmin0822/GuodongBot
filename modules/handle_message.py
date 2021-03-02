@@ -1,5 +1,6 @@
 import re
 import os
+import requests
 import configparser
 from modules.send_message import send_message
 from modules.make_CQ import make_cq
@@ -44,6 +45,12 @@ def is_keyword_hit_message(message,keywordList):
             return True
     return False
 
+def rand_cartoon_pic():
+    url="https://open.pixivic.net/wallpaper/pc/random?size=large&domain=https://i.pixiv.cat&webp=0&detail=1"
+    r = requests.head(url, stream=True)  
+    picstr = r.headers['Location']
+    picstrarr = picstr.split('?',1)
+    return picstrarr[0]
 
 def group_handle(rev):
     cqResArr = getAllCQ(rev["message"]);
@@ -57,3 +64,5 @@ def group_handle(rev):
             send_message(make_cq.make_reply_cq(rev["message_id"]) + make_cq.make_at_cq(rev["user_id"]) + "翻译器下载请见群文件，一些其他插件并不是全部都需要的，如有时间后续会整合", rev["group_id"], "group")
         elif is_keyword_hit_message(rev["message"],['为什么没有翻译','翻译器怎么用','翻译器问题']) == True:
             send_message(make_cq.make_reply_cq(rev["message_id"]) + make_cq.make_at_cq(rev["user_id"]) + "翻译器使用问题请先见b站教程https://space.bilibili.com/4834971或文字教程https://blog.csdn.net/hanmin822/article/details/107575287", rev["group_id"], "group")
+        elif is_keyword_hit_message(rev["message"],['来点二次元']) == True:
+            send_message(make_cq.make_reply_cq(rev["message_id"]) + make_cq.make_image_cq(rand_cartoon_pic()), rev["group_id"], "group")
