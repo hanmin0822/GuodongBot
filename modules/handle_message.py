@@ -52,6 +52,9 @@ def rand_cartoon_pic():
     picstrarr = picstr.split('?',1)
     return picstrarr[0]
 
+def pixiv_pic(pixiv_id,pic_format="jpg"):
+    return "https://pixiv.cat/" + pixiv_id + "." + pic_format
+
 def group_handle(rev):
     cqResArr = getAllCQ(rev["message"]);
     if is_atBOT(cqResArr) == True:
@@ -64,5 +67,11 @@ def group_handle(rev):
             send_message(make_cq.make_reply_cq(rev["message_id"]) + make_cq.make_at_cq(rev["user_id"]) + "翻译器下载请见群文件，一些其他插件并不是全部都需要的，如有时间后续会整合", rev["group_id"], "group")
         elif is_keyword_hit_message(rev["message"],['为什么没有翻译','翻译器怎么用','翻译器问题']) == True:
             send_message(make_cq.make_reply_cq(rev["message_id"]) + make_cq.make_at_cq(rev["user_id"]) + "翻译器使用问题请先见b站教程https://space.bilibili.com/4834971或文字教程https://blog.csdn.net/hanmin822/article/details/107575287", rev["group_id"], "group")
-        elif is_keyword_hit_message(rev["message"],['来点二次元']) == True:
+        elif is_keyword_hit_message(rev["message"],['来点二次元','随机图']) == True:
             send_message(make_cq.make_reply_cq(rev["message_id"]) + make_cq.make_image_cq(rand_cartoon_pic()), rev["group_id"], "group")
+        elif is_keyword_hit_message(rev["message"],['pixiv（']) == True:
+            if rev["user_id"] == 512240272:
+                pixivid = getmidstring(rev["message"],"pixiv（","）")
+                send_message(make_cq.make_reply_cq(rev["message_id"]) + make_cq.make_image_cq(pixiv_pic(pixivid)), rev["group_id"], "group")
+        else:
+            send_message(make_cq.make_reply_cq(rev["message_id"]) + "别叫，还没支持呢", rev["group_id"], "group")
