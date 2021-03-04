@@ -60,7 +60,7 @@ def group_handle(rev):
     if is_atBOT(cqResArr) == True:
         #自己被艾特了，开始处理信息
         if is_keyword_hit_message(rev["message"],['十连抽卡','方舟十连','十连']) == True:
-            send_message(make_cq.make_reply_cq(rev["message_id"]) + make_cq.make_at_cq(rev["user_id"]) + "该功能暂未开放",rev["group_id"],"group")
+            send_message(make_cq.make_reply_cq(rev["message_id"]) + make_cq.make_at_cq(rev["user_id"]) + "先用这个过过瘾 https://evanchen486.gitee.io/gacha-simulator/",rev["group_id"],"group")
         elif is_keyword_hit_message(rev["message"],['setu','涩图','来图']) == True:
             send_message(make_cq.make_reply_cq(rev["message_id"]) + make_cq.make_at_cq(rev["user_id"]) + "还没有涩图，差不多得了",rev["group_id"],"group")
         elif is_keyword_hit_message(rev["message"],['翻译器在哪下载','翻译器怎么下载','翻译器下载']) == True:
@@ -68,10 +68,10 @@ def group_handle(rev):
         elif is_keyword_hit_message(rev["message"],['为什么没有翻译','翻译器怎么用','翻译器问题']) == True:
             send_message(make_cq.make_reply_cq(rev["message_id"]) + make_cq.make_at_cq(rev["user_id"]) + "翻译器使用问题请先见b站教程https://space.bilibili.com/4834971或文字教程https://blog.csdn.net/hanmin822/article/details/107575287", rev["group_id"], "group")
         elif is_keyword_hit_message(rev["message"],['来点二次元','随机图']) == True:
-            send_message(make_cq.make_reply_cq(rev["message_id"]) + make_cq.make_image_cq(rand_cartoon_pic()), rev["group_id"], "group")
+            send_message(make_cq.make_image_cq(rand_cartoon_pic()), rev["group_id"], "group")
         elif is_keyword_hit_message(rev["message"],['pixiv（']) == True:
-            if rev["user_id"] == 512240272:
+            if rev["user_id"] in [512240272,1210561304]:
                 pixivid = getmidstring(rev["message"],"pixiv（","）")
-                send_message(make_cq.make_reply_cq(rev["message_id"]) + make_cq.make_image_cq(pixiv_pic(pixivid)), rev["group_id"], "group")
+                send_message(make_cq.make_image_cq(pixiv_pic(pixivid)), rev["group_id"], "group")
         else:
             send_message(make_cq.make_reply_cq(rev["message_id"]) + "别叫，还没支持呢", rev["group_id"], "group")
