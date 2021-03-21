@@ -21,6 +21,16 @@ def is_atBOT(res):
         return True
     return False
 
+def getPic(rev):
+    if "[CQ:image" in rev["message"]:
+        return getmidstring(rev["message"],"[CQ:image,file=",".image")
+    return "-1"
+
+def getPicStr(rev):
+    if "[私聊图片#" in rev["message"]:
+        return getmidstring(rev["message"],"[私聊图片#","#]")
+    return "-1"
+
 
 #取中间字符串
 def getmidstring(html, start_str, end):
@@ -55,6 +65,17 @@ def rand_cartoon_pic():
 def pixiv_pic(pixiv_id,pic_format="jpg"):
     return "https://pixiv.cat/" + pixiv_id + "." + pic_format
 
+def isQQInGroup(qq_id,group_id):
+    data = {
+        'user_id': qq_id,
+        'group_id': group_id
+    }
+    cq_url = config.get('network', 'SEND_ADDRESS') + "get_group_member_info"
+    rev = requests.post(cq_url, data=data)
+    if rev.json()['status'] == 'ok':
+        return True
+    return False
+
 def group_handle(rev):
     cqResArr = getAllCQ(rev["message"]);
     if is_atBOT(cqResArr) == True:
@@ -75,3 +96,15 @@ def group_handle(rev):
                 send_message(make_cq.make_image_cq(pixiv_pic(pixivid)), rev["group_id"], "group")
         else:
             send_message(make_cq.make_reply_cq(rev["message_id"]) + "别叫，还没支持呢", rev["group_id"], "group")
+
+def private_handle(rev):
+    cqResArr = getAllCQ(rev["message"]);
+    # 保证有人在群里
+    if isQQInGroup(rev["user_id"],909403785) == True:
+        if getPic(rev) != "-1":
+            send_message("[私聊图片#" + getPic(rev) + "#] 群友" + make_cq.make_at_cq(rev["user_id"]) + "发送了一张私聊图片，复制这条消息私聊发送给机器人即可查看！遵守群规，请勿发送到群里哦！",909403785,"group")
+        elif getPicStr(rev) != "-1":
+            send_message(make_cq.make_image_cq(getPicStr(rev) + ".image"),rev["user_id"],"private")
+        else:
+            send_message("暂不支持", rev["user_id"], "private")
+

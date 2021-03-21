@@ -1,4 +1,5 @@
 from modules.receive import rev_msg
+from modules.handle_message import private_handle
 from modules.handle_message import group_handle
 
 print('监听服务器已开启....')
@@ -13,7 +14,7 @@ while True:
     if rev["post_type"] == "message":
         print(rev)  # 需要功能自己DIY
         if rev["message_type"] == "private":  # 私聊
-            continue
+            private_handle(rev)
         elif rev["message_type"] == "group":  # 群聊
             group_handle(rev)
         else:
