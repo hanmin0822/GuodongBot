@@ -27,8 +27,8 @@ def getPic(rev):
     return "-1"
 
 def getPicStr(rev):
-    if "[私聊图片#" in rev["message"]:
-        return getmidstring(rev["message"],"[私聊图片#","#]")
+    if "私聊图片#" in rev["message"]:
+        return getmidstring(rev["message"],"私聊图片#","#")
     return "-1"
 
 
@@ -102,7 +102,7 @@ def private_handle(rev):
     # 保证有人在群里
     if isQQInGroup(rev["user_id"],909403785) == True:
         if getPic(rev) != "-1":
-            send_message("[私聊图片#" + getPic(rev) + "#] 群友" + make_cq.make_at_cq(rev["user_id"]) + "发送了一张私聊图片，复制这条消息私聊发送给机器人即可查看！遵守群规，请勿发送到群里哦！",909403785,"group")
+            send_message("[私聊图片#" + getPic(rev) + "#] 群友" + make_cq.make_at_cq(rev["user_id"]) + "发送了一张私聊图片，复制这条消息私聊发送给机器人即可查看！遵守群规，请勿将这张图发送到群里哦！",909403785,"group")
         elif getPicStr(rev) != "-1":
             send_message(make_cq.make_image_cq(getPicStr(rev) + ".image"),rev["user_id"],"private")
         else:
