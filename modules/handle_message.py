@@ -4,10 +4,12 @@ import requests
 import configparser
 from modules.send_message import send_message
 from modules.make_CQ import make_cq
+import redis
 
 config = configparser.ConfigParser()
 print(os.path.dirname(os.path.dirname(__file__)))
 config.read(os.path.dirname(os.path.dirname(__file__)) + '\\config.ini', encoding='GB18030')
+r = redis.Redis(host='localhost', port=6379, decode_responses=True)
 
 #得到所有CQ码的数组
 def getAllCQ(str):
@@ -103,8 +105,10 @@ def private_handle(rev):
     if isQQInGroup(rev["user_id"],909403785) == True:
         if getPic(rev) != "-1":
             send_message("[私聊图片#" + getPic(rev) + "#] 群友" + make_cq.make_at_cq(rev["user_id"]) + "发送了一张私聊图片，复制这条消息私聊发送给机器人即可查看！遵守群规，请勿将这张图发送到群里哦！",909403785,"group")
+            r.incr("pic_send_" + rev["user_id"], amount=1)
         elif getPicStr(rev) != "-1":
             send_message(make_cq.make_image_cq(getPicStr(rev) + ".image"),rev["user_id"],"private")
+            r.incr("pic_look_" + rev["user_id"], amount=1)
         else:
             send_message("暂不支持", rev["user_id"], "private")
 
