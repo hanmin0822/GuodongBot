@@ -92,6 +92,12 @@ def group_handle(rev):
             send_message(make_cq.make_reply_cq(rev["message_id"]) + make_cq.make_at_cq(rev["user_id"]) + "翻译器使用问题请先见b站教程https://space.bilibili.com/4834971或文字教程https://blog.csdn.net/hanmin822/article/details/107575287", rev["group_id"], "group")
         elif is_keyword_hit_message(rev["message"],['来点二次元','随机图']) == True:
             send_message(make_cq.make_image_cq(rand_cartoon_pic()), rev["group_id"], "group")
+        elif is_keyword_hit_message(rev["message"],['私图统计','私聊图统计']) == True:
+            keys = r.keys()
+            replyStr = ''
+            for k in keys:
+                replyStr = replyStr + k + ":" + r.get(k) + ";"
+            send_message("全局私聊图统计结果" + replyStr, rev["group_id"], "group")
         elif is_keyword_hit_message(rev["message"],['pixiv（']) == True:
             if rev["user_id"] in [512240272,1210561304]:
                 pixivid = getmidstring(rev["message"],"pixiv（","）")
@@ -105,10 +111,10 @@ def private_handle(rev):
     if isQQInGroup(rev["user_id"],909403785) == True:
         if getPic(rev) != "-1":
             send_message("[私聊图片#" + getPic(rev) + "#] 群友" + make_cq.make_at_cq(rev["user_id"]) + "发送了一张私聊图片，复制这条消息私聊发送给机器人即可查看！遵守群规，请勿将这张图发送到群里哦！",909403785,"group")
-            r.incr("pic_send_" + rev["user_id"], amount=1)
+            r.incr("pic_send_" + str(rev["user_id"]), amount=1)
         elif getPicStr(rev) != "-1":
             send_message(make_cq.make_image_cq(getPicStr(rev) + ".image"),rev["user_id"],"private")
-            r.incr("pic_look_" + rev["user_id"], amount=1)
+            r.incr("pic_look_" + str(rev["user_id"]), amount=1)
         else:
             send_message("暂不支持", rev["user_id"], "private")
 
